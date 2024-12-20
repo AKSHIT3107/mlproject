@@ -1,10 +1,18 @@
 # mlproject
-Download the Fuel_cell_performance_data-Full.csv dataset
-Select the target as given below (and drop other targets)
-Target1 - Roll Numbers ending with 0 or 5
-Target2 - Roll Numbers ending with 1 or 6
-Target3 - Roll Numbers ending with 2 or 7
-Target4 - Roll Numbers ending with 3 or 8
-Target5 - Roll Numbers ending with 4 or 9
-Divide the dataset into 70/30.
-Run multiple prediction models
+#1.)Linear Regression:
+#(a)MSE: 0.0005
+#(b)R²: 0.8789
+#Conclusion: High accuracy and good fit for linear relationships. Likely a strong contender.
+#2.Decision Tree:
+#Expected: May overfit with high R² but lower generalization. Check MSE to confirm performance.
+#Random Forest:
+#Expected: Likely to outperform Decision Tree by reducing overfitting, with lower MSE and high R². Best for complex relationships.
+#Action: Compare results after running all models:
+#If Random Forest has the lowest MSE and highest R², it’s the best.
+#Otherwise, stick with Linear Regression for simplicity and efficiency.
+
+
+
+
+
+
