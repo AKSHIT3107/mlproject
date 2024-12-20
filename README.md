@@ -18,7 +18,7 @@ Based on the evaluation metrics:
 - **Linear Regression** is suitable for datasets with linear relationships and is computationally efficient.
 - **Random Forest** is recommended if the data exhibits complex patterns or non-linear relationships.
 
-For this project, **[insert chosen model here]** was selected as the best-performing model due to its [insert reasoning, e.g., accuracy, generalization].
+For this project, **Linear Regression** was selected as the best-performing model due to its high accuracy.
 
 
 
