@@ -1,0 +1,349 @@
+{
+  "nbformat": 4,
+  "nbformat_minor": 0,
+  "metadata": {
+    "colab": {
+      "provenance": [],
+      "authorship_tag": "ABX9TyPsXu/1cy2s9AT1tD9Y47+Z",
+      "include_colab_link": true
+    },
+    "kernelspec": {
+      "name": "python3",
+      "display_name": "Python 3"
+    },
+    "language_info": {
+      "name": "python"
+    }
+  },
+  "cells": [
+    {
+      "cell_type": "markdown",
+      "metadata": {
+        "id": "view-in-github",
+        "colab_type": "text"
+      },
+      "source": [
+        "<a href=\"https://colab.research.google.com/github/AKSHIT3107/mlproject/blob/main/Ml%20project\" target=\"_parent\"><img src=\"https://colab.research.google.com/assets/colab-badge.svg\" alt=\"Open In Colab\"/></a>"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "execution_count": 26,
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "-t0XkytdwozQ",
+        "outputId": "a4097a03-a9df-47fa-bae3-68fa84a8dbd0"
+      },
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Requirement already satisfied: pandas in /usr/local/lib/python3.10/dist-packages (2.2.2)\n",
+            "Requirement already satisfied: scikit-learn in /usr/local/lib/python3.10/dist-packages (1.6.0)\n",
+            "Requirement already satisfied: numpy>=1.22.4 in /usr/local/lib/python3.10/dist-packages (from pandas) (1.26.4)\n",
+            "Requirement already satisfied: python-dateutil>=2.8.2 in /usr/local/lib/python3.10/dist-packages (from pandas) (2.8.2)\n",
+            "Requirement already satisfied: pytz>=2020.1 in /usr/local/lib/python3.10/dist-packages (from pandas) (2024.2)\n",
+            "Requirement already satisfied: tzdata>=2022.7 in /usr/local/lib/python3.10/dist-packages (from pandas) (2024.2)\n",
+            "Requirement already satisfied: scipy>=1.6.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.13.1)\n",
+            "Requirement already satisfied: joblib>=1.2.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (1.4.2)\n",
+            "Requirement already satisfied: threadpoolctl>=3.1.0 in /usr/local/lib/python3.10/dist-packages (from scikit-learn) (3.5.0)\n",
+            "Requirement already satisfied: six>=1.5 in /usr/local/lib/python3.10/dist-packages (from python-dateutil>=2.8.2->pandas) (1.17.0)\n"
+          ]
+        }
+      ],
+      "source": [
+        "!pip install pandas scikit-learn\n"
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "import pandas as pd\n",
+        "from sklearn.model_selection import train_test_split\n",
+        "from sklearn.ensemble import RandomForestRegressor\n",
+        "from sklearn.linear_model import LinearRegression\n",
+        "from sklearn.svm import SVR\n",
+        "from sklearn.metrics import mean_squared_error, r2_score"
+      ],
+      "metadata": {
+        "id": "A9dFOnjlw_Xh"
+      },
+      "execution_count": 27,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "dataset_path = \"/content/Fuel_cell_performance_data-Full.csv\"\n",
+        "df = pd.read_csv(dataset_path)\n"
+      ],
+      "metadata": {
+        "id": "T2PzZJflxD3y"
+      },
+      "execution_count": 28,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "print(\"Dataset Info:\")\n",
+        "print(df.info())"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "4FxxQ2Z3zTZ3",
+        "outputId": "b1045828-3c4a-4397-cfb0-09e4f6b7cd9a"
+      },
+      "execution_count": 7,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "Dataset Info:\n",
+            "<class 'pandas.core.frame.DataFrame'>\n",
+            "RangeIndex: 1000 entries, 0 to 999\n",
+            "Data columns (total 20 columns):\n",
+            " #   Column   Non-Null Count  Dtype  \n",
+            "---  ------   --------------  -----  \n",
+            " 0   F1       1000 non-null   float64\n",
+            " 1   F2       1000 non-null   float64\n",
+            " 2   F3       1000 non-null   float64\n",
+            " 3   F4       1000 non-null   float64\n",
+            " 4   F5       1000 non-null   float64\n",
+            " 5   F6       1000 non-null   float64\n",
+            " 6   F7       1000 non-null   float64\n",
+            " 7   F8       1000 non-null   float64\n",
+            " 8   F9       1000 non-null   int64  \n",
+            " 9   F10      1000 non-null   float64\n",
+            " 10  F11      1000 non-null   float64\n",
+            " 11  F12      1000 non-null   float64\n",
+            " 12  F13      1000 non-null   int64  \n",
+            " 13  F14      1000 non-null   float64\n",
+            " 14  F15      1000 non-null   int64  \n",
+            " 15  Target1  1000 non-null   float64\n",
+            " 16  Target2  1000 non-null   float64\n",
+            " 17  Target3  1000 non-null   float64\n",
+            " 18  Target4  1000 non-null   float64\n",
+            " 19  Target5  1000 non-null   float64\n",
+            "dtypes: float64(17), int64(3)\n",
+            "memory usage: 156.4 KB\n",
+            "None\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "if df.isnull().sum().sum() > 0:\n",
+        "    print(\"\\nHandling missing values...\")\n",
+        "    df = df.dropna()"
+      ],
+      "metadata": {
+        "id": "LJmCprKRzviq"
+      },
+      "execution_count": 8,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "roll_number = \"102203435\"\n",
+        "last_digit = int(roll_number[-1])"
+      ],
+      "metadata": {
+        "id": "Er4OBMp-zzdx"
+      },
+      "execution_count": 9,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "target_map = {\n",
+        "    0: \"Target1\", 5: \"Target1\",\n",
+        "    1: \"Target2\", 6: \"Target2\",\n",
+        "    2: \"Target3\", 7: \"Target3\",\n",
+        "    3: \"Target4\", 8: \"Target4\",\n",
+        "    4: \"Target5\", 9: \"Target5\"\n",
+        "}\n",
+        "selected_target = target_map[last_digit]\n",
+        "print(f\"\\nSelected Target: {selected_target}\")"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "X3fCPE6tz0lC",
+        "outputId": "dca21966-bcb1-4cac-8839-a73a671d16f4"
+      },
+      "execution_count": 10,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Selected Target: Target1\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "df = df[[selected_target, *df.columns.difference([selected_target])]]"
+      ],
+      "metadata": {
+        "id": "Lk3piJsYz6il"
+      },
+      "execution_count": 11,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "X = df.drop(columns=[selected_target])  # Features\n",
+        "y = df[selected_target]"
+      ],
+      "metadata": {
+        "id": "LvYABX7mz-lK"
+      },
+      "execution_count": 12,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)\n"
+      ],
+      "metadata": {
+        "id": "aj1NCohaUJ81"
+      },
+      "execution_count": 13,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "# Import necessary libraries\n",
+        "from sklearn.metrics import mean_squared_error, r2_score\n",
+        "from sklearn.linear_model import LinearRegression\n",
+        "from sklearn.tree import DecisionTreeRegressor\n",
+        "from sklearn.ensemble import RandomForestRegressor\n",
+        "\n",
+        "# Function to train and evaluate a model\n",
+        "def evaluate_model(model, X_train, X_test, y_train, y_test):\n",
+        "    # Train the model\n",
+        "    model.fit(X_train, y_train)\n",
+        "\n",
+        "    # Predict on the test set\n",
+        "    predictions = model.predict(X_test)\n",
+        "\n",
+        "    # Calculate evaluation metrics\n",
+        "    mse = mean_squared_error(y_test, predictions)\n",
+        "    r2 = r2_score(y_test, predictions)\n",
+        "\n",
+        "    # Display evaluation results\n",
+        "    print(f\"\\nModel: {model.__class__.__name__}\")  # Correct attribute for class name\n",
+        "    print(f\"Mean Squared Error (MSE): {mse:.4f}\")\n",
+        "    print(f\"R-squared Score (R2): {r2:.4f}\")\n",
+        "\n",
+        "# Example usage for Linear Regression\n",
+        "lr = LinearRegression()\n",
+        "evaluate_model(lr, X_train, X_test, y_train, y_test)\n",
+        "\n",
+        "# Example usage for Decision Tree\n",
+        "dt = DecisionTreeRegressor(random_state=42)\n",
+        "evaluate_model(dt, X_train, X_test, y_train, y_test)\n",
+        "\n",
+        "# Example usage for Random Forest\n",
+        "rf = RandomForestRegressor(random_state=42)\n",
+        "evaluate_model(rf, X_train, X_test, y_train, y_test)\n"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "rgnMTu60UJ0f",
+        "outputId": "a4d02af5-1333-43e2-d8bb-ca4d168e38a1"
+      },
+      "execution_count": 23,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Model: LinearRegression\n",
+            "Mean Squared Error (MSE): 0.0005\n",
+            "R-squared Score (R2): 0.8789\n",
+            "\n",
+            "Model: DecisionTreeRegressor\n",
+            "Mean Squared Error (MSE): 0.0010\n",
+            "R-squared Score (R2): 0.7827\n",
+            "\n",
+            "Model: RandomForestRegressor\n",
+            "Mean Squared Error (MSE): 0.0006\n",
+            "R-squared Score (R2): 0.8746\n"
+          ]
+        }
+      ]
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "results = {\n",
+        "    \"Model\": [\"Linear Regression\", \"Decision Tree\", \"Random Forest\"],\n",
+        "    \"MSE\": [mean_squared_error(y_test, lr.predict(X_test)),\n",
+        "            mean_squared_error(y_test, dt.predict(X_test)),\n",
+        "            mean_squared_error(y_test, rf.predict(X_test))],\n",
+        "    \"R2 Score\": [r2_score(y_test, lr.predict(X_test)),\n",
+        "                 r2_score(y_test, dt.predict(X_test)),\n",
+        "                 r2_score(y_test, rf.predict(X_test))]\n",
+        "}"
+      ],
+      "metadata": {
+        "id": "BTVYm1TCUSAA"
+      },
+      "execution_count": 24,
+      "outputs": []
+    },
+    {
+      "cell_type": "code",
+      "source": [
+        "results_df = pd.DataFrame(results)\n",
+        "print(\"\\nFinal Results:\")\n",
+        "print(results_df)"
+      ],
+      "metadata": {
+        "colab": {
+          "base_uri": "https://localhost:8080/"
+        },
+        "id": "FBjnPaLrUR0I",
+        "outputId": "d473fb20-83e0-4123-c9b9-24789e54c198"
+      },
+      "execution_count": 25,
+      "outputs": [
+        {
+          "output_type": "stream",
+          "name": "stdout",
+          "text": [
+            "\n",
+            "Final Results:\n",
+            "               Model       MSE  R2 Score\n",
+            "0  Linear Regression  0.000548  0.878938\n",
+            "1      Decision Tree  0.000984  0.782704\n",
+            "2      Random Forest  0.000568  0.874636\n"
+          ]
+        }
+      ]
+    }
+  ]
+}
